@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<teamcity-plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="urn:shemas-jetbrains-com:teamcity-plugin-v1-xml">
+  <info>
+    <name>ServerConfigurations</name>
+    <display-name>Server Configurations</display-name>
+    <version>1.0</version>
+    <description>Plugin helps you store and use server configurations with list of parameters</description>
+    <vendor><name>Alexander Shepel</name></vendor>
+  </info>
+  <deployment use-separate-classloader="true"/>
+</teamcity-plugin>

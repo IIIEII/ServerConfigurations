@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="serverconfigurations" default="all">
+  
+  
+  <property file="serverconfigurations.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.sbas/**"/>
+    <exclude name="**/.IJI.*/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.orig/**"/>
+    <exclude name="**/*.rbc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <include name="**/?*.properties"/>
+    <include name="**/?*.xml"/>
+    <include name="**/?*.gif"/>
+    <include name="**/?*.png"/>
+    <include name="**/?*.jpeg"/>
+    <include name="**/?*.jpg"/>
+    <include name="**/?*.html"/>
+    <include name="**/?*.dtd"/>
+    <include name="**/?*.tld"/>
+    <include name="**/?*.ftl"/>
+    <include name="**/?*.htm"/>
+    <include name="**/?*.jsp"/>
+    <include name="**/?*.js"/>
+  </patternset>
+  
+  
+  <!-- ProjectConfiguration Libraries -->
+  
+  <path id="library.teamcity_open_api_agent.classpath">
+    <pathelement location="${path.variable.teamcitydistribution}/devPackage/agent-api.jar"/>
+  </path>
+  
+  <path id="library.teamcity_open_api_common.classpath">
+    <pathelement location="${path.variable.teamcitydistribution}/devPackage/common-api.jar"/>
+    <pathelement location="${path.variable.teamcitydistribution}/devPackage/runtime/runtime-util.jar"/>
+  </path>
+  
+  <path id="library.teamcity_open_api_server.classpath">
+    <pathelement location="${path.variable.teamcitydistribution}/devPackage/server-api.jar"/>
+  </path>
+  
+  <path id="library.teamcity_third-party_common.classpath">
+    <pathelement location="${path.variable.teamcitydistribution}/webapps/ROOT/WEB-INF/lib/annotations.jar"/>
+    <pathelement location="${path.variable.teamcitydistribution}/webapps/ROOT/WEB-INF/lib/openapi.jar"/>
+    <pathelement location="${path.variable.teamcitydistribution}/webapps/ROOT/WEB-INF/lib/spring.jar"/>
+    <pathelement location="${path.variable.teamcitydistribution}/webapps/ROOT/WEB-INF/lib/util.jar"/>
+  </path>
+  
+  <path id="library.teamcity_third-party_server.classpath">
+    <pathelement location="${path.variable.teamcitydistribution}/webapps/ROOT/WEB-INF/lib/spring-webmvc.jar"/>
+  </path>
+  
+  <path id="library.tomcat.classpath">
+    <pathelement location="${path.variable.teamcitydistribution}/lib/servlet-api.jar"/>
+  </path>
+  
+  
+  <!-- Application Server Libraries -->
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm4-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module ServerConfigurations-common -->
+  
+  <dirname property="module.serverconfigurations-common.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.serverconfigurations-common" value="${compiler.args}"/>
+  
+  <property name="serverconfigurations-common.output.dir" value="${module.serverconfigurations-common.basedir}/out/production/ServerConfigurations-common"/>
+  <property name="serverconfigurations-common.testoutput.dir" value="${module.serverconfigurations-common.basedir}/out/test/ServerConfigurations-common"/>
+  
+  <path id="serverconfigurations-common.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="serverconfigurations-common.module.production.classpath">
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+  </path>
+  
+  <path id="serverconfigurations-common.runtime.production.module.classpath">
+    <pathelement location="${serverconfigurations-common.output.dir}"/>
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+  </path>
+  
+  <path id="serverconfigurations-common.module.classpath">
+    <pathelement location="${serverconfigurations-common.output.dir}"/>
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+  </path>
+  
+  <path id="serverconfigurations-common.runtime.module.classpath">
+    <pathelement location="${serverconfigurations-common.testoutput.dir}"/>
+    <pathelement location="${serverconfigurations-common.output.dir}"/>
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.serverconfigurations-common">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.serverconfigurations-common">
+    <patternset refid="excluded.from.module.serverconfigurations-common"/>
+  </patternset>
+  
+  <path id="serverconfigurations-common.module.sourcepath">
+    <dirset dir="${module.serverconfigurations-common.basedir}/common">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.serverconfigurations-common" depends="compile.module.serverconfigurations-common.production,compile.module.serverconfigurations-common.tests" description="Compile module ServerConfigurations-common"/>
+  
+  <target name="compile.module.serverconfigurations-common.production" depends="register.custom.compilers" description="Compile module ServerConfigurations-common; production classes">
+    <mkdir dir="${serverconfigurations-common.output.dir}"/>
+    <javac2 destdir="${serverconfigurations-common.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.serverconfigurations-common}"/>
+      <bootclasspath refid="serverconfigurations-common.module.bootclasspath"/>
+      <classpath refid="serverconfigurations-common.module.production.classpath"/>
+      <src refid="serverconfigurations-common.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.serverconfigurations-common"/>
+    </javac2>
+    
+    <copy todir="${serverconfigurations-common.output.dir}">
+      <fileset dir="${module.serverconfigurations-common.basedir}/common/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.serverconfigurations-common.tests" depends="register.custom.compilers,compile.module.serverconfigurations-common.production" description="compile module ServerConfigurations-common; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.serverconfigurations-common" description="cleanup module">
+    <delete dir="${serverconfigurations-common.output.dir}"/>
+    <delete dir="${serverconfigurations-common.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module ServerConfigurations-agent -->
+  
+  <dirname property="module.serverconfigurations-agent.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.serverconfigurations-agent" value="${compiler.args}"/>
+  
+  <property name="serverconfigurations-agent.output.dir" value="${module.serverconfigurations-agent.basedir}/out/production/ServerConfigurations-agent"/>
+  <property name="serverconfigurations-agent.testoutput.dir" value="${module.serverconfigurations-agent.basedir}/out/test/ServerConfigurations-agent"/>
+  
+  <path id="serverconfigurations-agent.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="serverconfigurations-agent.module.production.classpath">
+    <path refid="library.teamcity_open_api_agent.classpath"/>
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+    <pathelement location="${serverconfigurations-common.output.dir}"/>
+  </path>
+  
+  <path id="serverconfigurations-agent.runtime.production.module.classpath">
+    <pathelement location="${serverconfigurations-agent.output.dir}"/>
+    <path refid="library.teamcity_open_api_agent.classpath"/>
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+    <path refid="serverconfigurations-common.runtime.production.module.classpath"/>
+  </path>
+  
+  <path id="serverconfigurations-agent.module.classpath">
+    <pathelement location="${serverconfigurations-agent.output.dir}"/>
+    <path refid="library.teamcity_open_api_agent.classpath"/>
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+    <pathelement location="${serverconfigurations-common.testoutput.dir}"/>
+    <pathelement location="${serverconfigurations-common.output.dir}"/>
+  </path>
+  
+  <path id="serverconfigurations-agent.runtime.module.classpath">
+    <pathelement location="${serverconfigurations-agent.testoutput.dir}"/>
+    <pathelement location="${serverconfigurations-agent.output.dir}"/>
+    <path refid="library.teamcity_open_api_agent.classpath"/>
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+    <path refid="serverconfigurations-common.runtime.module.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.serverconfigurations-agent">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.serverconfigurations-agent">
+    <patternset refid="excluded.from.module.serverconfigurations-agent"/>
+  </patternset>
+  
+  <path id="serverconfigurations-agent.module.sourcepath">
+    <dirset dir="${module.serverconfigurations-agent.basedir}/agent">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.serverconfigurations-agent" depends="compile.module.serverconfigurations-agent.production,compile.module.serverconfigurations-agent.tests" description="Compile module ServerConfigurations-agent"/>
+  
+  <target name="compile.module.serverconfigurations-agent.production" depends="register.custom.compilers,compile.module.serverconfigurations-common" description="Compile module ServerConfigurations-agent; production classes">
+    <mkdir dir="${serverconfigurations-agent.output.dir}"/>
+    <javac2 destdir="${serverconfigurations-agent.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.serverconfigurations-agent}"/>
+      <bootclasspath refid="serverconfigurations-agent.module.bootclasspath"/>
+      <classpath refid="serverconfigurations-agent.module.production.classpath"/>
+      <src refid="serverconfigurations-agent.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.serverconfigurations-agent"/>
+    </javac2>
+    
+    <copy todir="${serverconfigurations-agent.output.dir}">
+      <fileset dir="${module.serverconfigurations-agent.basedir}/agent/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.serverconfigurations-agent.tests" depends="register.custom.compilers,compile.module.serverconfigurations-agent.production" description="compile module ServerConfigurations-agent; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.serverconfigurations-agent" description="cleanup module">
+    <delete dir="${serverconfigurations-agent.output.dir}"/>
+    <delete dir="${serverconfigurations-agent.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module ServerConfigurations-server -->
+  
+  <dirname property="module.serverconfigurations-server.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.serverconfigurations-server" value="${compiler.args}"/>
+  
+  <property name="serverconfigurations-server.output.dir" value="${module.serverconfigurations-server.basedir}/out/production/ServerConfigurations-server"/>
+  <property name="serverconfigurations-server.testoutput.dir" value="${module.serverconfigurations-server.basedir}/out/test/ServerConfigurations-server"/>
+  
+  <path id="serverconfigurations-server.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="serverconfigurations-server.module.production.classpath">
+    <path refid="library.tomcat.classpath"/>
+    <path refid="library.teamcity_open_api_server.classpath"/>
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+    <path refid="library.teamcity_third-party_server.classpath"/>
+    <pathelement location="${serverconfigurations-common.output.dir}"/>
+  </path>
+  
+  <path id="serverconfigurations-server.runtime.production.module.classpath">
+    <pathelement location="${serverconfigurations-server.output.dir}"/>
+    <path refid="library.tomcat.classpath"/>
+    <path refid="library.teamcity_open_api_server.classpath"/>
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+    <path refid="library.teamcity_third-party_server.classpath"/>
+    <path refid="serverconfigurations-common.runtime.production.module.classpath"/>
+  </path>
+  
+  <path id="serverconfigurations-server.module.classpath">
+    <pathelement location="${serverconfigurations-server.output.dir}"/>
+    <path refid="library.tomcat.classpath"/>
+    <path refid="library.teamcity_open_api_server.classpath"/>
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+    <path refid="library.teamcity_third-party_server.classpath"/>
+    <pathelement location="${serverconfigurations-common.testoutput.dir}"/>
+    <pathelement location="${serverconfigurations-common.output.dir}"/>
+  </path>
+  
+  <path id="serverconfigurations-server.runtime.module.classpath">
+    <pathelement location="${serverconfigurations-server.testoutput.dir}"/>
+    <pathelement location="${serverconfigurations-server.output.dir}"/>
+    <path refid="library.tomcat.classpath"/>
+    <path refid="library.teamcity_open_api_server.classpath"/>
+    <path refid="library.teamcity_open_api_common.classpath"/>
+    <path refid="library.teamcity_third-party_common.classpath"/>
+    <path refid="library.teamcity_third-party_server.classpath"/>
+    <path refid="serverconfigurations-common.runtime.module.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.serverconfigurations-server">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.serverconfigurations-server">
+    <patternset refid="excluded.from.module.serverconfigurations-server"/>
+  </patternset>
+  
+  <path id="serverconfigurations-server.module.sourcepath">
+    <dirset dir="${module.serverconfigurations-server.basedir}/server">
+      <include name="src"/>
+      <include name="resources"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.serverconfigurations-server" depends="compile.module.serverconfigurations-server.production,compile.module.serverconfigurations-server.tests" description="Compile module ServerConfigurations-server"/>
+  
+  <target name="compile.module.serverconfigurations-server.production" depends="register.custom.compilers,compile.module.serverconfigurations-common" description="Compile module ServerConfigurations-server; production classes">
+    <mkdir dir="${serverconfigurations-server.output.dir}"/>
+    <javac2 destdir="${serverconfigurations-server.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.serverconfigurations-server}"/>
+      <bootclasspath refid="serverconfigurations-server.module.bootclasspath"/>
+      <classpath refid="serverconfigurations-server.module.production.classpath"/>
+      <src refid="serverconfigurations-server.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.serverconfigurations-server"/>
+    </javac2>
+    
+    <copy todir="${serverconfigurations-server.output.dir}">
+      <fileset dir="${module.serverconfigurations-server.basedir}/server/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.serverconfigurations-server.basedir}/server/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.serverconfigurations-server.tests" depends="register.custom.compilers,compile.module.serverconfigurations-server.production" description="compile module ServerConfigurations-server; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.serverconfigurations-server" description="cleanup module">
+    <delete dir="${serverconfigurations-server.output.dir}"/>
+    <delete dir="${serverconfigurations-server.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.serverconfigurations-common, clean.module.serverconfigurations-agent, clean.module.serverconfigurations-server, clean.artifact.unpacked_plugin" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.serverconfigurations-common, compile.module.serverconfigurations-agent, compile.module.serverconfigurations-server" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.copy_plugin_to_data_directory" value="${path.variable.teamcitydatadirectory}/plugins"/>
+    <property name="artifact.output.final_plugin_package" value="${basedir}/out/artifacts/final_plugin_package"/>
+    <property name="artifact.output.serverconfigurations-common.jar" value="${basedir}/out/artifacts/ServerConfigurations_common_jar"/>
+    <property name="artifact.output.unpacked_plugin" value="${basedir}/out/artifacts/unpacked_plugin"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.ServerConfigurations.zip" value="${artifacts.temp.dir}/ServerConfigurations.zip"/>
+    <property name="temp.jar.path.ServerConfigurations.zip2" value="${artifacts.temp.dir}/1/ServerConfigurations.zip"/>
+    <mkdir dir="${artifacts.temp.dir}/1"/>
+    <property name="temp.jar.path.ServerConfigurations-common.jar.jar" value="${artifacts.temp.dir}/ServerConfigurations-common.jar.jar"/>
+    <property name="temp.jar.path.ServerConfigurations.zip3" value="${artifacts.temp.dir}/2/ServerConfigurations.zip"/>
+    <mkdir dir="${artifacts.temp.dir}/2"/>
+    <property name="temp.jar.path.ServerConfigurations-agent.jar" value="${artifacts.temp.dir}/ServerConfigurations-agent.jar"/>
+    <property name="temp.jar.path.ServerConfigurations-server.jar" value="${artifacts.temp.dir}/ServerConfigurations-server.jar"/>
+  </target>
+  
+  <target name="clean.artifact.unpacked_plugin" description="clean unpacked plugin artifact output">
+    <delete dir="${artifact.output.unpacked_plugin}"/>
+  </target>
+  
+  <target name="artifact.copy_plugin_to_data_directory" depends="init.artifacts, artifact.unpacked_plugin" description="Build &#39;copy plugin to data directory&#39; artifact">
+    <property name="artifact.temp.output.copy_plugin_to_data_directory" value="${artifacts.temp.dir}/copy_plugin_to_data_directory"/>
+    <mkdir dir="${artifact.temp.output.copy_plugin_to_data_directory}"/>
+    <zip destfile="${temp.jar.path.ServerConfigurations.zip}">
+      <zipfileset dir="${artifact.output.unpacked_plugin}"/>
+    </zip>
+    <copy file="${temp.jar.path.ServerConfigurations.zip}" tofile="${artifact.temp.output.copy_plugin_to_data_directory}/ServerConfigurations.zip"/>
+  </target>
+  
+  <target name="artifact.final_plugin_package" depends="init.artifacts, artifact.unpacked_plugin" description="Build &#39;final plugin package&#39; artifact">
+    <property name="artifact.temp.output.final_plugin_package" value="${artifacts.temp.dir}/final_plugin_package"/>
+    <mkdir dir="${artifact.temp.output.final_plugin_package}"/>
+    <zip destfile="${temp.jar.path.ServerConfigurations.zip2}">
+      <zipfileset dir="${artifact.output.unpacked_plugin}"/>
+    </zip>
+    <copy file="${temp.jar.path.ServerConfigurations.zip2}" tofile="${artifact.temp.output.final_plugin_package}/ServerConfigurations.zip"/>
+  </target>
+  
+  <target name="artifact.serverconfigurations-common.jar" depends="init.artifacts, compile.module.serverconfigurations-common" description="Build &#39;ServerConfigurations-common.jar&#39; artifact">
+    <property name="artifact.temp.output.serverconfigurations-common.jar" value="${artifacts.temp.dir}/ServerConfigurations_common_jar"/>
+    <mkdir dir="${artifact.temp.output.serverconfigurations-common.jar}"/>
+    <jar destfile="${temp.jar.path.ServerConfigurations-common.jar.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${serverconfigurations-common.output.dir}"/>
+    </jar>
+    <copy file="${temp.jar.path.ServerConfigurations-common.jar.jar}" tofile="${artifact.temp.output.serverconfigurations-common.jar}/ServerConfigurations-common.jar.jar"/>
+  </target>
+  
+  <target name="artifact.unpacked_plugin" depends="init.artifacts, artifact.serverconfigurations-common.jar, compile.module.serverconfigurations-agent, artifact.serverconfigurations-common.jar, compile.module.serverconfigurations-server" description="Build &#39;unpacked plugin&#39; artifact">
+    <mkdir dir="${artifact.output.unpacked_plugin}"/>
+    <jar destfile="${temp.jar.path.ServerConfigurations-agent.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${serverconfigurations-agent.output.dir}"/>
+    </jar>
+    <zip destfile="${temp.jar.path.ServerConfigurations.zip3}">
+      <zipfileset dir="${artifact.temp.output.serverconfigurations-common.jar}" prefix="ServerConfigurations/lib"/>
+      <zipfileset file="${temp.jar.path.ServerConfigurations-agent.jar}" prefix="ServerConfigurations/lib"/>
+    </zip>
+    <jar destfile="${temp.jar.path.ServerConfigurations-server.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${serverconfigurations-server.output.dir}"/>
+    </jar>
+    <mkdir dir="${artifact.output.unpacked_plugin}/agent"/>
+    <copy file="${temp.jar.path.ServerConfigurations.zip3}" tofile="${artifact.output.unpacked_plugin}/agent/ServerConfigurations.zip"/>
+    <mkdir dir="${artifact.output.unpacked_plugin}/server"/>
+    <copy todir="${artifact.output.unpacked_plugin}/server">
+      <fileset dir="${artifact.temp.output.serverconfigurations-common.jar}"/>
+    </copy>
+    <copy file="${temp.jar.path.ServerConfigurations-server.jar}" tofile="${artifact.output.unpacked_plugin}/server/ServerConfigurations-server.jar"/>
+    <ant antfile="build.xml" target="prepare.plugin.descriptor.file.artifacts" dir="${basedir}">
+      <property name="artifact.output.path" value="${artifact.output.unpacked_plugin}"/>
+      <property name="source" value="teamcity-plugin.xml"/>
+      <property name="dest" value="${artifact.output.path}/teamcity-plugin.xml"/>
+      <property name="plugin.vendor" value=""/>
+      <property name="plugin.vendor.url" value=""/>
+    </ant>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.copy_plugin_to_data_directory, artifact.final_plugin_package, artifact.serverconfigurations-common.jar, artifact.unpacked_plugin" description="Build all artifacts">
+    <mkdir dir="${artifact.output.copy_plugin_to_data_directory}"/>
+    <copy todir="${artifact.output.copy_plugin_to_data_directory}">
+      <fileset dir="${artifact.temp.output.copy_plugin_to_data_directory}"/>
+    </copy>
+    <mkdir dir="${artifact.output.final_plugin_package}"/>
+    <copy todir="${artifact.output.final_plugin_package}">
+      <fileset dir="${artifact.temp.output.final_plugin_package}"/>
+    </copy>
+    <mkdir dir="${artifact.output.serverconfigurations-common.jar}"/>
+    <copy todir="${artifact.output.serverconfigurations-common.jar}">
+      <fileset dir="${artifact.temp.output.serverconfigurations-common.jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>

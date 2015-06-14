@@ -1,0 +1,15 @@
+.serverConfigurations h2 {
+    margin-bottom: 10px;
+}
+
+.serverConfigurations .runnerFormTable {
+    margin-bottom: 20px;
+}
+
+.serverConfigurations .runnerFormTable tr *:first-child {
+    width:372px;
+}
+
+.serverConfigurations input[type=text], .serverConfigurations input[type=password], .serverConfigurations select {
+    width: 372px;
+}
