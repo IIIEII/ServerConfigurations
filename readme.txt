@@ -1,2 +1,0 @@
-Plugin helps you store and use server configurations with list of parameters.
-In administration screen you could create templates and server configurations with unlimited list of parameters (addresses, ports, credentials, etc). Then you could choose server in your project and use all parameters in build configurations. At any time you can select another server in project without reconfiguring build configurations and changing any parameters.
