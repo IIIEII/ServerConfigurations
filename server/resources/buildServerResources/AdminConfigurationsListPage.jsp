@@ -1,6 +1,7 @@
 <%@ include file="/include.jsp" %>
 
-<c:set var="pluginUrl">/admin/admin.html?item=${pluginName}</c:set>
+<c:url value="/admin/admin.html?item=${pluginName}" var="pluginUrl"/>
+<c:url value="${controllerPath}" var="controllerPath"/>
 
 <div class="serverConfigurations">
 
@@ -45,7 +46,7 @@
     <h2 class="noBorder">Templates</h2>
 
     <div class="topButtons">
-        <a class="btn" href="/admin/admin.html?item=${pluginName}&action=newTemplate"><span class="addNew">Create new template</span></a>
+        <a class="btn" href="${pluginUrl}&action=newTemplate"><span class="addNew">Create new template</span></a>
     </div>
     <div>
         <c:choose>

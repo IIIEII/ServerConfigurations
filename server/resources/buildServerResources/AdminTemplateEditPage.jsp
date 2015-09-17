@@ -1,6 +1,7 @@
 <%@ include file="/include.jsp" %>
 
-<c:set var="pluginUrl">/admin/admin.html?item=${pluginName}</c:set>
+<c:url value="/admin/admin.html?item=${pluginName}" var="pluginUrl"/>
+<c:url value="${controllerPath}" var="controllerPath"/>
 
 <div class="serverConfigurations">
 

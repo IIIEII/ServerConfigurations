@@ -16,7 +16,8 @@
   ~ limitations under the License.
   --%>
 
-<c:set var="pluginUrl">/admin/editProject.html?projectId=<c:out value='${projectId}'/>&tab=<c:out value='${pluginName}'/></c:set>
+<c:url value="/admin/editProject.html?projectId=${projectId}&tab=${pluginName}" var="pluginUrl"/>
+<c:url value="${controllerPath}" var="controllerPath"/>
 
 <div id="serverConfigurations" class="section noMargin">
 
