@@ -9,6 +9,7 @@ Features:
  * Create server configuration by choosing template and filling template parameters
  * Attach server configuration to your projects and use all parameters in build configurations
  * Change server configurations in your projects to use another parameters without any reconfiguration
+ * Server configurations are inherited from parent projects to all child projects
 
 Configure template
 -------------------------
