@@ -21,12 +21,14 @@ import ServerConfigurations.server.AdminConfiguration.*;
 import ServerConfigurations.server.ProjectConfiguration.*;
 import jetbrains.buildServer.ExtensionHolder;
 import jetbrains.buildServer.UserDataStorage;
+import jetbrains.buildServer.parameters.ParametersProvider;
 import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.serverSide.parameters.AbstractParameterDescriptionProvider;
 import jetbrains.buildServer.serverSide.parameters.BuildParametersProvider;
 import jetbrains.buildServer.serverSide.parameters.ParameterDescriptionProvider;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -39,6 +41,7 @@ public class PropertiesProvider extends AbstractParameterDescriptionProvider
   private ServerConfigurations configurations;
   private ProjectSettingsManager projectSettingsManager;
   private final ServerUtil myUtil;
+  private ProjectManager projectManager;
 
   public PropertiesProvider(@NotNull ExtensionHolder extensionHolder,
                             @NotNull final ProjectManager projectManager,
@@ -48,6 +51,7 @@ public class PropertiesProvider extends AbstractParameterDescriptionProvider
     this.configurations = configurations;
     this.projectSettingsManager = projectSettingsManager;
     this.myUtil = util;
+    this.projectManager = projectManager;
 
     extensionHolder.registerExtension(
             BuildParametersProvider.class, PropertiesProvider.class.getName(), this
@@ -70,19 +74,29 @@ public class PropertiesProvider extends AbstractParameterDescriptionProvider
   public Collection<String> getParametersAvailableOnAgent(@NotNull final SBuild build)
   {
     // Returns collection of parameters (names) always available on the agent for the specified build.
-    ProjectConfigurations projectSettings = (ProjectConfigurations) this.projectSettingsManager.getSettings(build.getProjectId(), Util.PLUGIN_NAME);
-
     TreeSet<String> parameters = new TreeSet<String>();
-    for(ProjectConfiguration projectConfiguration : projectSettings.getConfigurations()) {
-      String configurationName = projectConfiguration.getName();
-      ServerConfiguration configuration = this.configurations.getConfigurationByName(configurationName);
-      if (configuration != null) {
-        parameters.add(projectConfiguration.getPrefix() + ".name");
-        parameters.add(projectConfiguration.getPrefix() + ".server.address");
-        for (ServerConfigurationProperty property : configuration.getProperties()) {
-          parameters.add(projectConfiguration.getPrefix() + "." + property.getName());
+
+    String projectId = build.getProjectId();
+    Set<String> prefixes = new HashSet<String>();
+
+    while(projectId != null) {
+      ProjectConfigurations projectSettings = (ProjectConfigurations) this.projectSettingsManager.getSettings(projectId, Util.PLUGIN_NAME);
+      for (ProjectConfiguration projectConfiguration : projectSettings.getConfigurations()) {
+        String prefix = projectConfiguration.getPrefix();
+        if (!prefixes.contains(prefix)) {
+          prefixes.add(prefix);
+          String configurationName = projectConfiguration.getName();
+          ServerConfiguration configuration = this.configurations.getConfigurationByName(configurationName);
+          if (configuration != null) {
+            parameters.add(prefix + ".name");
+//            parameters.add(prefix + ".server.address");
+            for (ServerConfigurationProperty property : configuration.getProperties()) {
+              parameters.add(prefix + "." + property.getName());
+            }
+          }
         }
       }
+      projectId = projectManager.findProjectById(projectId).getParentProjectId();
     }
     return parameters;
   }
@@ -91,7 +105,6 @@ public class PropertiesProvider extends AbstractParameterDescriptionProvider
   {
     // This extension point is called before parameters are sent to a build agent. Build context can be used to alter parameters of a build before data is sent to a build agent
     SRunningBuild runningBuild = buildStartContext.getBuild();
-    ProjectConfigurations projectSettings = (ProjectConfigurations) this.projectSettingsManager.getSettings(runningBuild.getProjectId(), Util.PLUGIN_NAME);
 
     Set<String> storedPasswords = new HashSet<String>();
     final UserDataStorage storage = ((RunningBuildEx) runningBuild).getUserDataStorage();
@@ -102,33 +115,43 @@ public class PropertiesProvider extends AbstractParameterDescriptionProvider
       storage.setValue(myUtil.currentBuildNumberKEY, runningBuild.getBuildNumber());
     }
     storage.setValue(myUtil.passwordsKEY, storedPasswords);
-    for(ProjectConfiguration projectConfiguration : projectSettings.getConfigurations()) {
-      String serverName = projectConfiguration.getName();
-      ServerConfiguration configuration = this.configurations.getConfigurationByName(serverName);
-      buildStartContext.addSharedParameter(projectConfiguration.getPrefix() + ".name", configuration.getName());
-      Template template = this.configurations.getTemplateByName(configuration.getTemplateName());
-      for (ServerConfigurationProperty property : configuration.getProperties()) {
-        String name = projectConfiguration.getPrefix() + "." + property.getName();
-        boolean isSet = false;
-        if (template != null) {
-          TemplateProperty templateProperty = template.getPropertyByName(property.getName());
-          if (templateProperty != null) {
-            // Hide password values from build parameters tab
-            if (templateProperty.getType().equals(PropertiesType.PASSWORD)) {
-              buildStartContext.addSharedParameter(name, "%%secure:configuration.password." + name + "%%");
-              buildStartContext.addSharedParameter("secure:configuration.password." + name, property.getValue(templateProperty.getType()));
-              storedPasswords.add(property.getValue(templateProperty.getType()));
-            } else {
-              buildStartContext.addSharedParameter(name, property.getValue(templateProperty.getType()));
+
+    String projectId = runningBuild.getProjectId();
+    Set<String> prefixes = new HashSet<String>();
+    while(projectId != null) {
+      ProjectConfigurations projectSettings = (ProjectConfigurations) this.projectSettingsManager.getSettings(projectId, Util.PLUGIN_NAME);
+        for(ProjectConfiguration projectConfiguration : projectSettings.getConfigurations()) {
+          String serverName = projectConfiguration.getName();
+          String prefix = projectConfiguration.getPrefix();
+          if (!prefixes.contains(prefix)) {
+            prefixes.add(prefix);
+            ServerConfiguration configuration = this.configurations.getConfigurationByName(serverName);
+            buildStartContext.addSharedParameter(prefix + ".name", configuration.getName());
+            Template template = this.configurations.getTemplateByName(configuration.getTemplateName());
+            for (ServerConfigurationProperty property : configuration.getProperties()) {
+              String name = prefix + "." + property.getName();
+              boolean isSet = false;
+              if (template != null) {
+                TemplateProperty templateProperty = template.getPropertyByName(property.getName());
+                if (templateProperty != null) {
+                  // Hide password values from build parameters tab
+                  if (templateProperty.getType().equals(PropertiesType.PASSWORD)) {
+                    buildStartContext.addSharedParameter(name, "%%secure:configuration.password." + name + "%%");
+                    buildStartContext.addSharedParameter("secure:configuration.password." + name, property.getValue(templateProperty.getType()));
+                    storedPasswords.add(property.getValue(templateProperty.getType()));
+                  } else {
+                    buildStartContext.addSharedParameter(name, property.getValue(templateProperty.getType()));
+                  }
+                  isSet = true;
+                }
+              }
+              if (!isSet) {
+                buildStartContext.addSharedParameter(name, property.getValue(PropertiesType.STRING));
+              }
             }
-            isSet = true;
           }
         }
-        if (!isSet) {
-          buildStartContext.addSharedParameter(name, property.getValue(PropertiesType.STRING));
-        }
-
-      }
+      projectId = projectManager.findProjectById(projectId).getParentProjectId();
     }
   }
 
