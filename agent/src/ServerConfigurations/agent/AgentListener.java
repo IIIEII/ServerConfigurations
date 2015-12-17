@@ -48,5 +48,19 @@ public class AgentListener extends AgentLifeCycleAdapter {
         runner.addConfigParameter(param.getKey(), runner.getConfigParameters().get(param.getValue().substring(1, param.getValue().length() - 1)));
       }
     }
+    paramIter = runner.getBuildParameters().getEnvironmentVariables().entrySet().iterator();
+    while(paramIter.hasNext()) {
+      Map.Entry<String, String> param = (Map.Entry<String, String>)paramIter.next();
+      if (param.getValue().matches("^%secure:configuration\\.password[^%]+%$")) {
+        runner.addEnvironmentVariable(param.getKey(), runner.getConfigParameters().get(param.getValue().substring(1, param.getValue().length() - 1)));
+      }
+    }
+    paramIter = runner.getBuildParameters().getSystemProperties().entrySet().iterator();
+    while(paramIter.hasNext()) {
+      Map.Entry<String, String> param = (Map.Entry<String, String>)paramIter.next();
+      if (param.getValue().matches("^%secure:configuration\\.password[^%]+%$")) {
+        runner.addSystemProperty(param.getKey(), runner.getConfigParameters().get(param.getValue().substring(1, param.getValue().length() - 1)));
+      }
+    }
   }
 }
