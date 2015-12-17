@@ -70,7 +70,7 @@ ServerConfigurations.saveServerConfiguration = ServerConfigurations.getFunction(
 ServerConfigurations.saveProjectServerConfiguration = ServerConfigurations.getFunction(
     'serverConfigurationSaveButton',
     'serverConfigurationForm',
-    'initialPrefix,prefix,name',
+    'initialPrefix,initialBranchFilter,prefix,name,branchFilter',
     'serverConfigurationMessageComponent',
     'serverConfigurationComponent'
 );

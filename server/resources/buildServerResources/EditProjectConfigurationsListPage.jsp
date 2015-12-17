@@ -37,14 +37,25 @@
                 <l:tableWithHighlighting className="parametersTable" id="configurations">
                     <tr>
                         <th>Parameters Prefix</th>
+                        <th>Branch Filter</th>
                         <th colspan="3">Configuration Name</th>
                     </tr>
                     <c:forEach var="configuration" items="${configurations}">
-                        <c:set var="confEditUrl">${pluginUrl}&action=edit&prefix=<c:out value='${configuration.prefix}'/></c:set>
-                        <c:set var="confDeleteUrl"><c:out value='${controllerPath}'/>?projectId=<c:out value='${projectId}'/>&action=delete&prefix=<c:out value='${configuration.prefix}'/></c:set>
+                        <c:url value="${pluginUrl}" var="confEditUrl">
+                            <c:param name="action" value="edit" />
+                            <c:param name="prefix" value="${configuration.prefix}" />
+                            <c:param name="branchFilter" value="${configuration.branchFilter}" />
+                        </c:url>
+                        <c:url value="${controllerPath}" var="confDeleteUrl">
+                            <c:param name="action" value="delete" />
+                            <c:param name="projectId" value="${projectId}" />
+                            <c:param name="prefix" value="${configuration.prefix}" />
+                            <c:param name="branchFilter" value="${configuration.branchFilter}" />
+                        </c:url>
                         <c:set var="onclick">BS.openUrl(event, '${confEditUrl}'); return false;</c:set>
                         <tr>
                             <td class="name highlight" onclick="${onclick}"><c:out value="${configuration.prefix}"/></td>
+                            <td class="highlight" onclick="${onclick}"><c:out value="${configuration.branchFilter}"/></td>
                             <td class="highlight" onclick="${onclick}"><c:out value="${configuration.name}"/></td>
                             <td class="actions edit highlight">
                                 <a href="${confEditUrl}">Edit</a>

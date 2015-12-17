@@ -40,6 +40,7 @@ public class ProjectConfigurations implements jetbrains.buildServer.serverSide.s
       ProjectConfiguration configuration = new ProjectConfiguration();
       configuration.setName(configurationElm.getAttributeValue(Controller.PROJECT_CONFIGURATION_NAME_TAG, ""));
       configuration.setPrefix(configurationElm.getAttributeValue(Controller.PROJECT_CONFIGURATION_PREFIX_TAG, ""));
+      configuration.setBranchFilter(configurationElm.getAttributeValue(Controller.PROJECT_CONFIGURATION_BRANCHFILTER_TAG, ""));
       this.getConfigurations().add(configuration);
     }
   }
@@ -49,6 +50,7 @@ public class ProjectConfigurations implements jetbrains.buildServer.serverSide.s
       Element configurationElm = new Element(Controller.PROJECT_CONFIGURATION_TAG);
       configurationElm.setAttribute(Controller.PROJECT_CONFIGURATION_NAME_TAG, String.valueOf(configuration.getName()));
       configurationElm.setAttribute(Controller.PROJECT_CONFIGURATION_PREFIX_TAG, String.valueOf(configuration.getPrefix()));
+      configurationElm.setAttribute(Controller.PROJECT_CONFIGURATION_BRANCHFILTER_TAG, String.valueOf(configuration.getBranchFilter()));
       parentElement.addContent(configurationElm);
     }
   }
@@ -65,9 +67,9 @@ public class ProjectConfigurations implements jetbrains.buildServer.serverSide.s
     }
     return configurationsList;
   }
-  public ProjectConfiguration getConfigurationByPrefix(String configurationPrefix) {
+  public ProjectConfiguration getConfigurationByPrefixBranchFilter(String configurationPrefix, String branchFilter) {
     for (ProjectConfiguration configuration : this.getConfigurations()) {
-      if (configuration.getPrefix().contentEquals(configurationPrefix)) {
+      if (configuration.getPrefix().contentEquals(configurationPrefix) && configuration.getBranchFilter().contentEquals(branchFilter)) {
         return configuration;
       }
     }

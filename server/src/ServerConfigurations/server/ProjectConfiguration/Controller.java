@@ -55,6 +55,7 @@ public class Controller extends BaseController {
   public static final String PROJECT_CONFIGURATION_TAG = "Configuration";
   public static final String PROJECT_CONFIGURATION_NAME_TAG = "name";
   public static final String PROJECT_CONFIGURATION_PREFIX_TAG = "prefix";
+  public static final String PROJECT_CONFIGURATION_BRANCHFILTER_TAG = "branchFilter";
   private String listPagePath;
   private String editPagePath;
   private ServerConfigurations configurations;
@@ -104,8 +105,9 @@ public class Controller extends BaseController {
         } else if (action.equals("edit")) {
 
           String configurationPrefix = request.getParameter("prefix");
+          String configurationBranchFilter = this.hasRequestParameter(request, "branchFilter")?request.getParameter("branchFilter"):"";
           if (configurationPrefix != null) {
-            ProjectConfiguration configuration = projectSettings.getConfigurationByPrefix(configurationPrefix);
+            ProjectConfiguration configuration = projectSettings.getConfigurationByPrefixBranchFilter(configurationPrefix, configurationBranchFilter);
             if (configuration != null) {
               ModelAndView modelAndView = new ModelAndView(this.editPagePath);
               modelAndView.getModel().put("pluginName", Util.PLUGIN_NAME);
@@ -137,24 +139,26 @@ public class Controller extends BaseController {
           if (!this.hasRequestParameter(request, "name")) {
             return this.sendError(request, response, "Choose server configuration");
           }
+          String branchFilter = this.hasRequestParameter(request, "branchFilter")?request.getParameter("branchFilter"):"";
           ProjectConfiguration configuration;
           if (!this.hasRequestParameter(request, "initialPrefix")) {
-            if (projectSettings.getConfigurationByPrefix(request.getParameter("prefix")) != null) {
-              return this.sendError(request, response, "There is another configuration with such prefix, please choose another");
+            if (projectSettings.getConfigurationByPrefixBranchFilter(request.getParameter("prefix"), branchFilter) != null) {
+              return this.sendError(request, response, "There is another configuration with such prefix and branch filter, please choose another");
             } else {
               configuration = projectSettings.newConfiguration();
             }
           } else {
-            configuration = projectSettings.getConfigurationByPrefix(request.getParameter("initialPrefix"));
+            configuration = projectSettings.getConfigurationByPrefixBranchFilter(request.getParameter("initialPrefix"), request.getParameter("initialBranchFilter"));
           }
           configuration.setName(request.getParameter("name"));
           configuration.setPrefix(request.getParameter("prefix"));
+          configuration.setBranchFilter(branchFilter);
           project.persist();
           return this.sendMessage(request, response, "Project server configuration saved successfully");
 
         } else if (action.equals("delete")) {
 
-          ProjectConfiguration configuration = projectSettings.getConfigurationByPrefix(request.getParameter("prefix"));
+          ProjectConfiguration configuration = projectSettings.getConfigurationByPrefixBranchFilter(request.getParameter("prefix"), request.getParameter("branchFilter"));
           projectSettings.deleteConfiguration(configuration);
           project.persist();
           return new ModelAndView(new RedirectView("/admin/editProject.html?projectId=" + project.getExternalId() + "&tab=" + Util.PLUGIN_NAME, true));

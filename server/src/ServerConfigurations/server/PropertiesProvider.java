@@ -21,14 +21,14 @@ import ServerConfigurations.server.AdminConfiguration.*;
 import ServerConfigurations.server.ProjectConfiguration.*;
 import jetbrains.buildServer.ExtensionHolder;
 import jetbrains.buildServer.UserDataStorage;
-import jetbrains.buildServer.parameters.ParametersProvider;
+import jetbrains.buildServer.log.Loggers;
 import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.serverSide.parameters.AbstractParameterDescriptionProvider;
 import jetbrains.buildServer.serverSide.parameters.BuildParametersProvider;
 import jetbrains.buildServer.serverSide.parameters.ParameterDescriptionProvider;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
+import jetbrains.buildServer.vcs.spec.BranchFilterImpl;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -48,10 +48,12 @@ public class PropertiesProvider extends AbstractParameterDescriptionProvider
                             @NotNull ProjectSettingsManager projectSettingsManager,
                             @NotNull ServerConfigurations configurations,
                             @NotNull ServerUtil util) {
+
     this.configurations = configurations;
     this.projectSettingsManager = projectSettingsManager;
     this.myUtil = util;
     this.projectManager = projectManager;
+
 
     extensionHolder.registerExtension(
             BuildParametersProvider.class, PropertiesProvider.class.getName(), this
@@ -123,7 +125,9 @@ public class PropertiesProvider extends AbstractParameterDescriptionProvider
         for(ProjectConfiguration projectConfiguration : projectSettings.getConfigurations()) {
           String serverName = projectConfiguration.getName();
           String prefix = projectConfiguration.getPrefix();
-          if (!prefixes.contains(prefix)) {
+          String branchFilterText = projectConfiguration.getBranchFilter();
+          BranchFilterImpl branchFilter = new BranchFilterImpl(branchFilterText);
+          if (branchFilter.accept(runningBuild.getBranch()) && !prefixes.contains(prefix)) {
             prefixes.add(prefix);
             ServerConfiguration configuration = this.configurations.getConfigurationByName(serverName);
             buildStartContext.addSharedParameter(prefix + ".name", configuration.getName());

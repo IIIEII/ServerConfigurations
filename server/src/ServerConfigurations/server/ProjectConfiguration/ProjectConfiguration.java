@@ -26,6 +26,7 @@ public class ProjectConfiguration {
 
   private String name;
   private String prefix;
+  private String branchFilter;
 
   public String getName() {
     return this.name;
@@ -41,10 +42,18 @@ public class ProjectConfiguration {
     this.prefix = prefix;
   }
 
+  public String getBranchFilter() {
+    return branchFilter;
+  }
+  public void setBranchFilter(String branchFilter) {
+    this.branchFilter = branchFilter;
+  }
+
   public Map<String,String> getConfigurationMap() {
     HashMap<String,String> map = new HashMap<String, String>();
     map.put(Controller.PROJECT_CONFIGURATION_NAME_TAG, this.name);
     map.put(Controller.PROJECT_CONFIGURATION_PREFIX_TAG, this.prefix);
+    map.put(Controller.PROJECT_CONFIGURATION_BRANCHFILTER_TAG, this.branchFilter);
     return map;
   }
 

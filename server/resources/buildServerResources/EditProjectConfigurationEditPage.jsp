@@ -24,6 +24,13 @@
                         </td>
                     </tr>
                     <tr>
+                        <th><label for="branchFilter">Branch Filter:</label></th>
+                        <td>
+                            <input type="text" name="branchFilter" id="branchFilter" value="<c:out value='${branchFilter}'/>" class="textField" placeholder="+:*">
+                            <div class="grayNote">Apply server configuration parameters only for build configurations in this branches.</div>
+                        </td>
+                    </tr>
+                    <tr>
                         <th><label for="name">Configuration Name:</label></th>
                         <td>
                             <forms:select id="name" name="name" enableFilter="true">
@@ -56,6 +63,7 @@
                 <input type="button" value="Cancel" class="btn cancel"
                        onclick="BS.openUrl(event, '${pluginUrl}'); return false;">
                 <input type="hidden" id="initialPrefix" name="initialPrefix" value="<c:out value='${prefix}'/>" />
+                <input type="hidden" id="initialBranchFilter" name="initialBranchFilter" value="<c:out value='${branchFilter}'/>" />
                 <i id="saving" style="display: none; " class="icon-refresh icon-spin progressRing progressRingDefault" title="Please wait..."></i>
             </div>
         </form>

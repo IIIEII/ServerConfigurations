@@ -141,6 +141,10 @@ public class ServerConfiguration {
   }
 
   public Map<String, Object> getConfigurationMap() {
+    return getConfigurationMap(false);
+  }
+
+  public Map<String, Object> getConfigurationMap(Boolean withPasswords) {
     Template template = Controller.configurations.getTemplateByName(templateName);
     Map<String, Object> configuration = new LinkedHashMap<String, Object>();
     configuration.put(Controller.CONFIGURATION_NAME_TAG, name);
@@ -154,7 +158,7 @@ public class ServerConfiguration {
           propertyMap.put(Controller.CONFIGURATION_PROP_NAME_TAG, property.getName());
           propertyMap.put(Controller.CONFIGURATION_PROP_TYPE_TAG, templateProperty.getType().toString());
           if (templateProperty.getType().equals(PropertiesType.PASSWORD)) {
-            propertyMap.put(Controller.CONFIGURATION_PROP_VALUE_TAG, "");
+            propertyMap.put(Controller.CONFIGURATION_PROP_VALUE_TAG, withPasswords ? this.getPropertyValue(property.getName(), templateProperty.getType()) : "");
           } else {
             propertyMap.put(Controller.CONFIGURATION_PROP_VALUE_TAG, this.getPropertyValue(property.getName(), templateProperty.getType()));
           }

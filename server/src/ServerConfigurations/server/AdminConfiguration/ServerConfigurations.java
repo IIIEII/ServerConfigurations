@@ -64,10 +64,19 @@ public class ServerConfigurations {
   public void deleteConfiguration(ServerConfiguration configuration) {
     this.getConfigurations().remove(configuration);
   }
+
   public List<Map> getConfigurationsList() {
+    return getConfigurationsList(false);
+  }
+
+  public List<Map> getConfigurationsListWithPasswords() {
+    return getConfigurationsList(true);
+  }
+
+  public List<Map> getConfigurationsList(Boolean withPasswords) {
     List<Map> configurationsList = new ArrayList<Map>();
     for (ServerConfiguration configuration : getConfigurations()) {
-      configurationsList.add(configuration.getConfigurationMap());
+      configurationsList.add(configuration.getConfigurationMap(withPasswords));
     }
     return configurationsList;
   }

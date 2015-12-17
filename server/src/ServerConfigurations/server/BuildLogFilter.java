@@ -53,7 +53,8 @@ public class BuildLogFilter implements BuildMessagesTranslator {
     Set<String> storedPasswords = storage.getValue(myUtil.passwordsKEY);
     if (storedPasswords != null) {
       for (String value : storedPasswords) {
-        text = text.replaceAll(value, "******");
+        if (!value.equals(""))
+          text = text.replaceAll(value, "******");
       }
     }
     return Collections.singletonList(DefaultMessagesInfo.createTextMessage(originalMessage, text));
