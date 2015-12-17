@@ -21,7 +21,6 @@ import ServerConfigurations.server.AdminConfiguration.*;
 import ServerConfigurations.server.ProjectConfiguration.*;
 import jetbrains.buildServer.ExtensionHolder;
 import jetbrains.buildServer.UserDataStorage;
-import jetbrains.buildServer.log.Loggers;
 import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.serverSide.parameters.AbstractParameterDescriptionProvider;
 import jetbrains.buildServer.serverSide.parameters.BuildParametersProvider;
@@ -126,8 +125,17 @@ public class PropertiesProvider extends AbstractParameterDescriptionProvider
           String serverName = projectConfiguration.getName();
           String prefix = projectConfiguration.getPrefix();
           String branchFilterText = projectConfiguration.getBranchFilter();
-          BranchFilterImpl branchFilter = new BranchFilterImpl(branchFilterText);
-          if (branchFilter.accept(runningBuild.getBranch()) && !prefixes.contains(prefix)) {
+          Boolean checkBranch = true;
+          if (runningBuild.getBranch() != null) {
+            if (branchFilterText.contentEquals(""))
+              branchFilterText = "+:*";
+            BranchFilterImpl branchFilter = new BranchFilterImpl(branchFilterText);
+            checkBranch = branchFilter.accept(runningBuild.getBranch());
+          } else {
+            if (!branchFilterText.contentEquals("") && !branchFilterText.contentEquals("+:*"))
+              checkBranch = false;
+          }
+          if (checkBranch && !prefixes.contains(prefix)) {
             prefixes.add(prefix);
             ServerConfiguration configuration = this.configurations.getConfigurationByName(serverName);
             buildStartContext.addSharedParameter(prefix + ".name", configuration.getName());
