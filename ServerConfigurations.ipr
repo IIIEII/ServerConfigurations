@@ -44,6 +44,7 @@
             <element id="module-output" name="ServerConfigurations-server" />
           </element>
         </element>
+        <element id="file-copy" path="$PROJECT_DIR$/teamcity-plugin.xml" />
       </root>
     </artifact>
     <artifact type="jar" name="final plugin package">
