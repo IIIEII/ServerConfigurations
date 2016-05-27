@@ -122,7 +122,9 @@
     <option name="GENERATE_NO_WARNINGS" value="true" />
     <option name="DEPRECATION" value="false" />
   </component>
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
@@ -140,18 +142,6 @@
     </autodetection-disabled>
   </component>
   <component name="IdProvider" IDEtalkID="295ECF4BACA29968FFDC885420AD7516" />
-  <component name="InspectionProjectProfileManager">
-    <profiles>
-      <profile version="1.0" is_locked="false">
-        <option name="myName" value="Project Default" />
-        <option name="myLocal" value="false" />
-        <inspection_tool class="UnusedImport" enabled="true" level="ERROR" enabled_by_default="true" />
-      </profile>
-    </profiles>
-    <option name="PROJECT_PROFILE" value="Project Default" />
-    <option name="USE_PROJECT_PROFILE" value="true" />
-    <version value="1.0" />
-  </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
@@ -577,7 +567,7 @@
       <module fileurl="file://$PROJECT_DIR$/root.iml" filepath="$PROJECT_DIR$/root.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ProjectRunConfigurationManager">
@@ -737,6 +727,7 @@
         <root url="jar://$TEAMCITY_HOME$/webapps/ROOT/WEB-INF/lib/spring-webmvc.jar!/" />
         <root url="jar://$TEAMCITY_HOME$/webapps/ROOT/WEB-INF/lib/server.jar!/" />
         <root url="jar://$TEAMCITY_HOME$/webapps/ROOT/WEB-INF/lib/jdom.jar!/" />
+        <root url="jar://$TEAMCITY_HOME$/webapps/ROOT/WEB-INF/plugins/searchBuildByNumber/server/searchBuildByNumber.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
