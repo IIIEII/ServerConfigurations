@@ -10,6 +10,8 @@ Features:
  * Attach server configuration to your projects and use all parameters in build configurations
  * Change server configurations in your projects to use another parameters without any reconfiguration
  * Server configurations are inherited from parent projects to all child projects
+ * Attach different server configurations in your project to different branches
+
 
 Configure template
 -------------------------
@@ -21,7 +23,8 @@ Configure some server configurations
 
 Attach server configuration to project
 -------------------------------------------------
-![Project configuration](https://www.evernote.com/shard/s1/sh/29c09c8c-5eb1-4939-bff0-f8e431428484/b371fb599eda53c3eb4db25460c71f6a/res/55c3cac9-cea9-4289-a317-90ab73405f63/skitch.png?resizeSmall&width=832)
+![Project configuration](https://www.evernote.com/shard/s1/sh/a9dd537b-1d2f-4748-bcd1-7ed8eca4d34d/49768cf8709fc114a4ea6bd8597568a5/res/545b992f-7b4d-45f4-8356-cb32057f0671/skitch.png?resizeSmall&width=832)
+![Project configuration](https://www.evernote.com/shard/s1/sh/3e0f88e9-7b3f-4d29-9c71-611788127976/08ff0710028278b21874a1c0908ecd3d/res/3fe566f8-d429-412d-a631-ec28e3ffebe8/skitch.png?resizeSmall&width=832)
 
 Use parameters in build configurations
 ---------------------------------------------------
