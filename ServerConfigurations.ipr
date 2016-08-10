@@ -568,7 +568,7 @@
       <module fileurl="file://$PROJECT_DIR$/root.iml" filepath="$PROJECT_DIR$/root.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ProjectRunConfigurationManager">
@@ -693,6 +693,7 @@
         <root url="jar://$TEAMCITY_HOME$/devPackage/common-api.jar!/" />
         <root url="jar://$TEAMCITY_HOME$/devPackage/runtime/runtime-util.jar!/" />
         <root url="jar://$TEAMCITY_HOME$/webapps/ROOT/WEB-INF/lib/xstream-1.4.1.jar!/" />
+        <root url="jar://$TEAMCITY_HOME$/webapps/ROOT/WEB-INF/lib/xstream-1.4.8-custom.jar!/" />
       </CLASSES>
       <JAVADOC>
         <root url="jar://$TEAMCITY_HOME$/devPackage/javadoc/openApi-help.jar!/" />

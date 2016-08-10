@@ -24,6 +24,7 @@ import jetbrains.buildServer.serverSide.RunningBuildEx;
 import jetbrains.buildServer.serverSide.SRunningBuild;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -41,22 +42,28 @@ public class BuildLogFilter implements BuildMessagesTranslator {
 
   @NotNull
   public List<BuildMessage1> translateMessages(@NotNull final SRunningBuild build,
-                                               @NotNull final BuildMessage1 originalMessage
+                                               @NotNull final List<BuildMessage1> messages
   ) {
-    final Object data = originalMessage.getValue();
-    if (!DefaultMessagesInfo.MSG_TEXT.equals(originalMessage.getTypeId()) || data == null || !(data instanceof String)) {
-      return Collections.singletonList(originalMessage);
-    }
-    String text = (String) data;
-
     final UserDataStorage storage = ((RunningBuildEx) build).getUserDataStorage();
     Set<String> storedPasswords = storage.getValue(myUtil.passwordsKEY);
-    if (storedPasswords != null) {
-      for (String value : storedPasswords) {
-        if (!value.equals(""))
-          text = text.replaceAll(value, "******");
+
+    List<BuildMessage1> result = new ArrayList<BuildMessage1>();
+    for (BuildMessage1 originalMessage : messages) {
+      final Object data = originalMessage.getValue();
+      if (!DefaultMessagesInfo.MSG_TEXT.equals(originalMessage.getTypeId()) || data == null || !(data instanceof String)) {
+        result.add(originalMessage);
+        continue;
       }
+      String text = (String) data;
+
+      if (storedPasswords != null) {
+        for (String value : storedPasswords) {
+          if (!value.equals(""))
+            text = text.replaceAll(value, "******");
+        }
+      }
+      result.add(DefaultMessagesInfo.createTextMessage(originalMessage, text));
     }
-    return Collections.singletonList(DefaultMessagesInfo.createTextMessage(originalMessage, text));
+    return result;
   }
 }
